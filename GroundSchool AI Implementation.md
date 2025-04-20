@@ -22,26 +22,89 @@ This document provides a step-by-step approach for AI-assisted coding of the Gro
 > **Note:** All monetary values, pricing, and cost examples in this document are now expressed in ZAR (South African Rand) and rounded to the nearest integer for clarity and local relevance.
 
 ### 1.1 Project Initialization
-```
+```diff
 - Initialize a React Native project with Expo SDK 51
-- Configure Next.js for web PWA support
+- Configure Expo for Web PWA support (manifest, service worker)
 - Set up project structure with proper folder organization
 - Initialize Git repository
 ```
 
 ### 1.2 Dependencies Installation
+```bash
+expo install expo-document-picker \
+  @react-native-async-storage/async-storage \
+  @react-native-community/netinfo \
+  @react-navigation/native \
+  @react-navigation/stack \
+  react-native-screens \
+  react-native-safe-area-context \
+  sentry-expo
+npm install @supabase/supabase-js
 ```
-- Install React Native dependencies
-- Set up Supabase client
-- Configure DeepSeek AI API integration
-- Install UI component libraries
+- Create `src/lib/supabaseClient.js`:
+```javascript
+import { createClient } from '@supabase/supabase-js';
+export const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
 ```
+- Confirm `src/services/deepSeekService.js` has correct API URL and key usage.
+- Install any UI libraries or custom theming (we use our theme and ThemedButton component).
 
 ### 1.3 Environment Configuration
+```bash
+npm install --save-dev react-native-dotenv
 ```
-- Set up development, staging, and production environments
-- Configure environment variables
-- Set up CI/CD pipeline
+- Create an environment file (`.env`) at project root with keys:
+```dotenv
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+DEEPSEEK_URL=https://api.deepseek.ai
+DEEPSEEK_API_KEY=your_deepseek_api_key
+SENTRY_DSN=your_sentry_dsn
+```
+- Create `babel.config.js` to load env vars:
+```javascript
+module.exports = function(api) {
+  api.cache(true);
+  return {
+    presets: ['babel-preset-expo'],
+    plugins: [
+      ['module:react-native-dotenv', {
+        moduleName: '@env',
+        path: '.env',
+        allowUndefined: true
+      }]
+    ]
+  };
+};
+```
+- In code, import vars via:
+```javascript
+import { SUPABASE_URL, SUPABASE_ANON_KEY, DEEPSEEK_URL, DEEPSEEK_API_KEY, SENTRY_DSN } from '@env';
+```
+- Add CI/CD pipeline stub (`.github/workflows/ci.yml`):
+```yaml
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install Dependencies
+        run: npm install
+      - name: Lint & Test
+        run: npm test  # define tests later
 ```
 
 ## Step 2: Authentication & User Management

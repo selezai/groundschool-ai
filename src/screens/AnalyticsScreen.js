@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Alert } from 'react-native';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
 import { supabase } from '../lib/supabaseClient';
 import { AuthContext } from '../contexts/AuthContext';
 import { useTheme, spacing, typography } from '../theme/theme';
+import ThemedButton from '../components/ThemedButton';
 
 const AnalyticsScreen = () => {
   const { user } = useContext(AuthContext);
@@ -34,6 +37,28 @@ const AnalyticsScreen = () => {
     fetchAnalytics();
   }, [user]);
 
+  // Export analytics as CSV
+  const handleExport = async () => {
+    if (stats.length === 0) {
+      Alert.alert('No data', 'There is no analytics data to export.');
+      return;
+    }
+    const header = 'Topic,Mastery\n';
+    const rows = stats.map(r => `${r.topic},${r.mastery}`).join('\n');
+    const csv = header + rows;
+    const path = FileSystem.cacheDirectory + 'analytics.csv';
+    try {
+      await FileSystem.writeAsStringAsync(path, csv, { encoding: FileSystem.EncodingType.UTF8 });
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(path, { mimeType: 'text/csv' });
+      } else {
+        Alert.alert('Export failed', 'Sharing is not available on this device.');
+      }
+    } catch (err) {
+      Alert.alert('Error', err.message);
+    }
+  };
+
   const renderItem = ({ item }) => (
     <View style={[styles.item, { borderBottomColor: colors.border }]}>
       <Text style={[typography.body, { color: colors.text }]}>{item.topic}</Text>
@@ -49,6 +74,7 @@ const AnalyticsScreen = () => {
         renderItem={renderItem}
         ListEmptyComponent={<Text style={[typography.body, { color: colors.text, marginTop: spacing.sm }]}>No analytics data available.</Text>}
       />
+      <ThemedButton title="Export CSV" onPress={handleExport} style={{ marginTop: spacing.md }} accessibilityLabel="Export CSV button" />
     </View>
   );
 };
