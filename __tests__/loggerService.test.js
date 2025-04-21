@@ -1,4 +1,4 @@
-import { debug, info, warn, error, critical, setLogLevel, LOG_LEVELS } from '../src/services/loggerService';
+import { debug, info, warn, error, critical, setLogLevel, LOG_LEVELS as _LOG_LEVELS } from '../src/services/loggerService';
 import * as Sentry from 'sentry-expo';
 
 // Mock Sentry
@@ -12,18 +12,19 @@ jest.mock('sentry-expo', () => ({
 // Mock console methods
 const originalConsole = { ...console };
 beforeEach(() => {
-  console.debug = jest.fn();
-  console.info = jest.fn();
-  console.warn = jest.fn();
-  console.error = jest.fn();
+  // These are intentional mocks for testing, so we disable the ESLint warning
+  console.debug = jest.fn(); // eslint-disable-line no-console
+  console.info = jest.fn(); // eslint-disable-line no-console
+  console.warn = jest.fn(); // eslint-disable-line no-console
+  console.error = jest.fn(); // eslint-disable-line no-console
 });
 
 afterEach(() => {
   // Restore console methods
-  console.debug = originalConsole.debug;
-  console.info = originalConsole.info;
-  console.warn = originalConsole.warn;
-  console.error = originalConsole.error;
+  console.debug = originalConsole.debug; // eslint-disable-line no-console
+  console.info = originalConsole.info; // eslint-disable-line no-console
+  console.warn = originalConsole.warn; // eslint-disable-line no-console
+  console.error = originalConsole.error; // eslint-disable-line no-console
 });
 
 describe('loggerService', () => {
@@ -35,7 +36,7 @@ describe('loggerService', () => {
     it('logs debug messages to console', () => {
       debug('Debug message', { source: 'test' });
       
-      expect(console.debug).toHaveBeenCalledWith('[DEBUG]', 'Debug message', { source: 'test' });
+      expect(console.debug).toHaveBeenCalledWith('[DEBUG]', 'Debug message', { source: 'test' }); // eslint-disable-line no-console
     });
     
     it('does not log to Sentry by default', () => {

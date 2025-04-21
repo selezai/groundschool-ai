@@ -62,15 +62,15 @@ const formatLogData = (message, context = {}) => {
 export const debug = (message, context = {}) => {
   if (!shouldLog(LOG_LEVELS.DEBUG)) return;
   
-  const logData = formatLogData(message, context);
+  const _logData = formatLogData(message, context);
   
-  console.debug('[DEBUG]', message, context);
+  // console.debug removed for production cleanliness
   
   // Debug messages don't go to Sentry by default in tests
   if (process.env.NODE_ENV !== 'test') {
     Sentry.Native.captureMessage(message, {
       level: LOG_LEVELS.DEBUG,
-      extra: logData
+      extra: _logData
     });
   }
 };
@@ -83,9 +83,9 @@ export const debug = (message, context = {}) => {
 export const info = (message, context = {}) => {
   if (!shouldLog(LOG_LEVELS.INFO)) return;
   
-  const logData = formatLogData(message, context);
+  const _logData = formatLogData(message, context);
   
-  console.info('[INFO]', message, context);
+  // console.info removed for production cleanliness
   
   // Add a breadcrumb to Sentry
   Sentry.Native.addBreadcrumb({
@@ -104,9 +104,9 @@ export const info = (message, context = {}) => {
 export const warn = (message, context = {}) => {
   if (!shouldLog(LOG_LEVELS.WARNING)) return;
   
-  const logData = formatLogData(message, context);
+  const _logData = formatLogData(message, context);
   
-  console.warn('[WARN]', message, context);
+  // console.warn removed for production cleanliness
   
   // Send to Sentry
   Sentry.Native.captureMessage(message, {
@@ -123,9 +123,9 @@ export const warn = (message, context = {}) => {
 export const error = (message, context = {}) => {
   if (!shouldLog(LOG_LEVELS.ERROR)) return;
   
-  const logData = formatLogData(message, context);
+  const _logData = formatLogData(message, context);
   
-  console.error('[ERROR]', message, context);
+  // console.error removed for production cleanliness
   
   // Send to Sentry
   Sentry.Native.captureMessage(message, {
@@ -142,9 +142,9 @@ export const error = (message, context = {}) => {
 export const critical = (message, context = {}) => {
   if (!shouldLog(LOG_LEVELS.CRITICAL)) return;
   
-  const logData = formatLogData(message, context);
+  const _logData = formatLogData(message, context);
   
-  console.error('[CRITICAL]', message, context);
+  // console.error removed for production cleanliness
   
   // Send to Sentry
   Sentry.Native.captureMessage(message, {

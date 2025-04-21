@@ -1,3 +1,4 @@
+/* eslint-disable no-undef, no-console */
 // Service Worker for GroundSchool AI PWA
 const APP_CACHE_NAME = 'groundschool-ai-app-cache-v1';
 const STATIC_CACHE_NAME = 'groundschool-ai-static-cache-v1';
@@ -246,6 +247,7 @@ self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   
   // Open the app and navigate to a specific page
+  /* eslint-disable no-undef */
   event.waitUntil(
     clients.matchAll({ type: 'window' })
       .then(clientList => {

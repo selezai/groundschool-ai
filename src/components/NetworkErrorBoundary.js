@@ -22,7 +22,7 @@ const NetworkErrorFallback = ({ error, retry, isOffline }) => {
       <Text style={[typography.title, { color: colors.text, marginTop: spacing.md }]}>
         {isOffline ? 'No Internet Connection' : 'Network Error'}
       </Text>
-      <Text style={[typography.body, { color: colors.text, marginTop: spacing.sm, textAlign: 'center' }]}>
+      <Text style={[typography.body, styles.messageText, { color: colors.text }]}>
         {isOffline 
           ? 'Please check your internet connection and try again.' 
           : 'We\'re having trouble connecting to our servers. Please try again.'}
@@ -146,6 +146,10 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
     borderRadius: spacing.sm,
+  },
+  messageText: {
+    marginTop: spacing.sm,
+    textAlign: 'center',
   },
 });
 

@@ -11,7 +11,7 @@ import {
   getCachedDocuments,
   cacheQuiz,
   getCachedQuizzes,
-  updateOfflineStatus
+  _updateOfflineStatus
 } from '../src/services/offlineService';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -178,7 +178,7 @@ describe('offlineService', () => {
       const insertMock = jest.fn().mockResolvedValue({ error: null });
       
       supabase.storage.from.mockReturnValue({ upload: uploadMock });
-      supabase.from.mockImplementation((table) => {
+      supabase.from.mockImplementation((_table) => {
         return { insert: insertMock };
       });
       

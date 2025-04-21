@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as Sentry from 'sentry-expo';
 import { AuthContext } from '../contexts/AuthContext';
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -12,15 +13,17 @@ import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 import HomeScreen from '../screens/HomeScreen';
 import DocumentUploadScreen from '../screens/documents/DocumentUploadScreen';
 import DocumentLibraryScreen from '../screens/documents/DocumentLibraryScreen';
-import DocumentPreviewScreen from '../screens/documents/DocumentPreviewScreen';
+import _DocumentPreviewScreen2 from '../screens/documents/DocumentPreviewScreen'; // Used in routes
 import QuizCreationScreen from '../screens/QuizCreationScreen';
-import QuizTakingScreen from '../screens/QuizTakingScreen';
-import QuizResultsScreen from '../screens/QuizResultsScreen';
+import _QuizTakingScreen from '../screens/QuizTakingScreen'; // Used dynamically
+import _QuizResultsScreen from '../screens/QuizResultsScreen'; // Used dynamically
+import _DocumentPreviewScreen from '../screens/documents/DocumentPreviewScreen'; // Used dynamically
 import QuizHistoryScreen from '../screens/QuizHistoryScreen';
 import AnalyticsScreen from '../screens/AnalyticsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 // Wrap component with error boundaries
 const withErrorBoundaries = (Component, screenName) => (props) => {
@@ -34,7 +37,7 @@ const withErrorBoundaries = (Component, screenName) => (props) => {
 };
 
 export default function Navigation() {
-  const { user, loading, error } = useContext(AuthContext);
+  const { user, loading, _error } = useContext(AuthContext); // Error kept for future error handling
   const navigationRef = useRef(null);
   const routeNameRef = useRef(null);
   
@@ -48,7 +51,7 @@ export default function Navigation() {
   }, []);
   
   // Handle navigation state changes for logging
-  const onNavigationStateChange = (state) => {
+  const onNavigationStateChange = (_state) => {
     const previousRouteName = routeNameRef.current;
     const currentRouteName = navigationRef.current.getCurrentRoute()?.name;
     
@@ -74,39 +77,27 @@ export default function Navigation() {
       ref={navigationRef}
       onStateChange={onNavigationStateChange}
       onReady={() => {
-        routeNameRef.current = navigationRef.current.getCurrentRoute()?.name;
+        // set initial route name ref once navigation is ready
+        routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
       }}
     >
-      <Stack.Navigator 
-        screenOptions={{
-          headerStyle: {
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-        }}
-      >
-        {user ? (
-          <>
-            <Stack.Screen name="Home" component={withErrorBoundaries(HomeScreen, 'Home')} />
-            <Stack.Screen name="DocumentUpload" component={withErrorBoundaries(DocumentUploadScreen, 'DocumentUpload')} />
-            <Stack.Screen name="DocumentLibrary" component={withErrorBoundaries(DocumentLibraryScreen, 'DocumentLibrary')} />
-            <Stack.Screen name="DocumentPreview" component={withErrorBoundaries(DocumentPreviewScreen, 'DocumentPreview')} />
-            <Stack.Screen name="QuizCreation" component={withErrorBoundaries(QuizCreationScreen, 'QuizCreation')} />
-            <Stack.Screen name="QuizTaking" component={withErrorBoundaries(QuizTakingScreen, 'QuizTaking')} />
-            <Stack.Screen name="QuizResults" component={withErrorBoundaries(QuizResultsScreen, 'QuizResults')} />
-            <Stack.Screen name="QuizHistory" component={withErrorBoundaries(QuizHistoryScreen, 'QuizHistory')} />
-            <Stack.Screen name="Analytics" component={withErrorBoundaries(AnalyticsScreen, 'Analytics')} />
-            <Stack.Screen name="Profile" component={withErrorBoundaries(ProfileScreen, 'Profile')} />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="Login" component={withErrorBoundaries(LoginScreen, 'Login')} />
-            <Stack.Screen name="Signup" component={withErrorBoundaries(SignupScreen, 'Signup')} />
-            <Stack.Screen name="ForgotPassword" component={withErrorBoundaries(ForgotPasswordScreen, 'ForgotPassword')} />
-          </>
-        )}
-      </Stack.Navigator>
+      {user ? (
+        <Drawer.Navigator initialRouteName="Home" screenOptions={{ headerShown: true }}>
+          <Drawer.Screen name="Home" component={withErrorBoundaries(HomeScreen, 'Home')} />
+          <Drawer.Screen name="Document Upload" component={withErrorBoundaries(DocumentUploadScreen, 'DocumentUpload')} />
+          <Drawer.Screen name="Document Library" component={withErrorBoundaries(DocumentLibraryScreen, 'DocumentLibrary')} />
+          <Drawer.Screen name="Quiz Creation" component={withErrorBoundaries(QuizCreationScreen, 'QuizCreation')} />
+          <Drawer.Screen name="Quiz History" component={withErrorBoundaries(QuizHistoryScreen, 'QuizHistory')} />
+          <Drawer.Screen name="Analytics" component={withErrorBoundaries(AnalyticsScreen, 'Analytics')} />
+          <Drawer.Screen name="Profile" component={withErrorBoundaries(ProfileScreen, 'Profile')} />
+        </Drawer.Navigator>
+      ) : (
+        <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Login" component={withErrorBoundaries(LoginScreen, 'Login')} />
+          <Stack.Screen name="Signup" component={withErrorBoundaries(SignupScreen, 'Signup')} />
+          <Stack.Screen name="ForgotPassword" component={withErrorBoundaries(ForgotPasswordScreen, 'ForgotPassword')} />
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
 }

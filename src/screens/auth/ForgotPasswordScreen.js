@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { View, TextInput, Text, StyleSheet } from 'react-native';
+import COLORS from '../../constants/colors';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useTheme, spacing, typography } from '../../theme/theme';
 import ThemedButton from '../../components/ThemedButton';
@@ -43,7 +44,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: spacing.md, justifyContent: 'center' },
-  input: { borderWidth: 1, borderColor: '#ccc', padding: spacing.sm, marginBottom: spacing.sm, borderRadius: spacing.xs },
+  input: { borderWidth: 1, borderColor: COLORS.gray, padding: spacing.sm, marginBottom: spacing.sm, borderRadius: spacing.xs },
   error: { marginBottom: spacing.sm, textAlign: 'center' },
   message: { marginBottom: spacing.sm, textAlign: 'center' }
 });

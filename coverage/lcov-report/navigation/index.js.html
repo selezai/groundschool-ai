@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/21</span>
+                <span class='fraction'>0/22</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>0/21</span>
             </div>
         
             
@@ -165,17 +165,7 @@
 <a name='L100'></a><a href='#L100'>100</a>
 <a name='L101'></a><a href='#L101'>101</a>
 <a name='L102'></a><a href='#L102'>102</a>
-<a name='L103'></a><a href='#L103'>103</a>
-<a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a>
-<a name='L108'></a><a href='#L108'>108</a>
-<a name='L109'></a><a href='#L109'>109</a>
-<a name='L110'></a><a href='#L110'>110</a>
-<a name='L111'></a><a href='#L111'>111</a>
-<a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L103'></a><a href='#L103'>103</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,6 +187,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -251,20 +243,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -290,6 +270,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useContext, useRef, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as Sentry from 'sentry-expo';
 import { AuthContext } from '../contexts/AuthContext';
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -310,6 +291,7 @@ import AnalyticsScreen from '../screens/AnalyticsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 &nbsp;
 const Stack = <span class="cstat-no" title="statement not covered" >createStackNavigator();</span>
+const Drawer = <span class="cstat-no" title="statement not covered" >createDrawerNavigator();</span>
 &nbsp;
 // Wrap component with error boundaries
 const withErrorBoundaries = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(C</span>omponent, screenName) =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>rops) =&gt; {</span></span>
@@ -363,39 +345,27 @@ export default function <span class="fstat-no" title="function not covered" >Nav
       ref={navigationRef}
       onStateChange={onNavigationStateChange}
       onReady={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >        routeNameRef.current = navigationRef.current.getCurrentRoute()?.name;</span>
+        // set initial route name ref once navigation is ready
+<span class="cstat-no" title="statement not covered" >        routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;</span>
       }}
     &gt;
-      &lt;Stack.Navigator 
-        screenOptions={{
-          headerStyle: {
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-        }}
-      &gt;
-        {user ? (
-          &lt;&gt;
-            &lt;Stack.Screen name="Home" component={withErrorBoundaries(HomeScreen, 'Home')} /&gt;
-            &lt;Stack.Screen name="DocumentUpload" component={withErrorBoundaries(DocumentUploadScreen, 'DocumentUpload')} /&gt;
-            &lt;Stack.Screen name="DocumentLibrary" component={withErrorBoundaries(DocumentLibraryScreen, 'DocumentLibrary')} /&gt;
-            &lt;Stack.Screen name="DocumentPreview" component={withErrorBoundaries(DocumentPreviewScreen, 'DocumentPreview')} /&gt;
-            &lt;Stack.Screen name="QuizCreation" component={withErrorBoundaries(QuizCreationScreen, 'QuizCreation')} /&gt;
-            &lt;Stack.Screen name="QuizTaking" component={withErrorBoundaries(QuizTakingScreen, 'QuizTaking')} /&gt;
-            &lt;Stack.Screen name="QuizResults" component={withErrorBoundaries(QuizResultsScreen, 'QuizResults')} /&gt;
-            &lt;Stack.Screen name="QuizHistory" component={withErrorBoundaries(QuizHistoryScreen, 'QuizHistory')} /&gt;
-            &lt;Stack.Screen name="Analytics" component={withErrorBoundaries(AnalyticsScreen, 'Analytics')} /&gt;
-            &lt;Stack.Screen name="Profile" component={withErrorBoundaries(ProfileScreen, 'Profile')} /&gt;
-          &lt;/&gt;
-        ) : (
-          &lt;&gt;
-            &lt;Stack.Screen name="Login" component={withErrorBoundaries(LoginScreen, 'Login')} /&gt;
-            &lt;Stack.Screen name="Signup" component={withErrorBoundaries(SignupScreen, 'Signup')} /&gt;
-            &lt;Stack.Screen name="ForgotPassword" component={withErrorBoundaries(ForgotPasswordScreen, 'ForgotPassword')} /&gt;
-          &lt;/&gt;
-        )}
-      &lt;/Stack.Navigator&gt;
+      {user ? (
+        &lt;Drawer.Navigator initialRouteName="Home" screenOptions={{ headerShown: true }}&gt;
+          &lt;Drawer.Screen name="Home" component={withErrorBoundaries(HomeScreen, 'Home')} /&gt;
+          &lt;Drawer.Screen name="Document Upload" component={withErrorBoundaries(DocumentUploadScreen, 'DocumentUpload')} /&gt;
+          &lt;Drawer.Screen name="Document Library" component={withErrorBoundaries(DocumentLibraryScreen, 'DocumentLibrary')} /&gt;
+          &lt;Drawer.Screen name="Quiz Creation" component={withErrorBoundaries(QuizCreationScreen, 'QuizCreation')} /&gt;
+          &lt;Drawer.Screen name="Quiz History" component={withErrorBoundaries(QuizHistoryScreen, 'QuizHistory')} /&gt;
+          &lt;Drawer.Screen name="Analytics" component={withErrorBoundaries(AnalyticsScreen, 'Analytics')} /&gt;
+          &lt;Drawer.Screen name="Profile" component={withErrorBoundaries(ProfileScreen, 'Profile')} /&gt;
+        &lt;/Drawer.Navigator&gt;
+      ) : (
+        &lt;Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}&gt;
+          &lt;Stack.Screen name="Login" component={withErrorBoundaries(LoginScreen, 'Login')} /&gt;
+          &lt;Stack.Screen name="Signup" component={withErrorBoundaries(SignupScreen, 'Signup')} /&gt;
+          &lt;Stack.Screen name="ForgotPassword" component={withErrorBoundaries(ForgotPasswordScreen, 'ForgotPassword')} /&gt;
+        &lt;/Stack.Navigator&gt;
+      )}
     &lt;/NavigationContainer&gt;
   );
 }
@@ -406,7 +376,7 @@ export default function <span class="fstat-no" title="function not covered" >Nav
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-20T10:24:14.299Z
+                at 2025-04-20T12:51:39.863Z
             </div>
         <script src="../prettify.js"></script>
         <script>

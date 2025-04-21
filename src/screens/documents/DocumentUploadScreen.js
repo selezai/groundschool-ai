@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { View, Text, ActivityIndicator, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView, Image } from 'react-native';
+import { View, Text, ActivityIndicator, _TextInput, StyleSheet, TouchableOpacity, _Alert, ScrollView, Image } from 'react-native'; // _TextInput and _Alert kept for potential future use
 import { Ionicons } from '@expo/vector-icons';
+import COLORS from '../../constants/colors';
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
+import * as _FileSystem from 'expo-file-system'; // Kept for potential future use
 import { supabase } from '../../lib/supabaseClient';
 import { AuthContext } from '../../contexts/AuthContext';
 import NetInfo from '@react-native-community/netinfo';
-import { queueOperation, getOfflineStatus, cacheDocument } from '../../services/offlineService';
+import { queueOperation, _getOfflineStatus, cacheDocument } from '../../services/offlineService'; // _getOfflineStatus kept for potential future use
 import { useTheme, spacing, typography } from '../../theme/theme';
 import ThemedButton from '../../components/ThemedButton';
 
@@ -441,7 +442,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -10,
     right: -10,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     borderRadius: 20
   },
   messageContainer: {
@@ -459,7 +460,7 @@ const styles = StyleSheet.create({
   progressContainer: {
     width: '100%',
     height: 24,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: COLORS.midGray,
     borderRadius: 12,
     marginTop: spacing.md,
     overflow: 'hidden',

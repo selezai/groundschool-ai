@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent as _fireEvent, waitFor } from '@testing-library/react-native';
 
 // Mock logger services
 jest.mock('../src/services/loggerService', () => ({
@@ -56,7 +56,7 @@ import {
   ResponsiveContainer, 
   ResponsiveGrid, 
   ResponsiveSidebarLayout, 
-  useResponsive 
+  useResponsive as _useResponsive 
 } from '../src/web/ResponsiveLayout';
 import indexedDBService from '../src/web/indexedDBService';
 import fileHandlingService from '../src/web/fileHandlingService';
@@ -272,7 +272,7 @@ describe('Web Support', () => {
   describe('ResponsiveLayout', () => {
     it('ResponsiveContainer renders with correct styles', () => {
       const { getByTestId } = render(
-        <ResponsiveContainer testID="container">
+        <ResponsiveContainer data-testid="container">
           <div>Test content</div>
         </ResponsiveContainer>
       );
@@ -287,9 +287,9 @@ describe('Web Support', () => {
           columns={{ small: 1, medium: 2, large: 3 }}
           spacing={8}
         >
-          <div testID="item">Item 1</div>
-          <div testID="item">Item 2</div>
-          <div testID="item">Item 3</div>
+          <div data-testid="item">Item 1</div>
+          <div data-testid="item">Item 2</div>
+          <div data-testid="item">Item 3</div>
         </ResponsiveGrid>
       );
       
@@ -300,8 +300,8 @@ describe('Web Support', () => {
     it('ResponsiveSidebarLayout renders sidebar and content', () => {
       const { getByTestId } = render(
         <ResponsiveSidebarLayout
-          sidebar={<div testID="sidebar">Sidebar</div>}
-          content={<div testID="content">Content</div>}
+          sidebar={<div data-testid="sidebar">Sidebar</div>}
+          content={<div data-testid="content">Content</div>}
         />
       );
       

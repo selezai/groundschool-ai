@@ -107,17 +107,17 @@ const ResponsiveGrid = ({
   style,
   ...props 
 }) => {
-  const { width } = useResponsive();
-  const { colors } = useTheme();
+  const { _width } = useResponsive();
+  const { _colors } = useTheme();
   
   // Determine number of columns based on screen width
   let numColumns = columns.small;
   
-  if (width >= BREAKPOINTS.XLARGE) {
+  if (_width >= BREAKPOINTS.XLARGE) {
     numColumns = columns.xlarge;
-  } else if (width >= BREAKPOINTS.LARGE) {
+  } else if (_width >= BREAKPOINTS.LARGE) {
     numColumns = columns.large;
-  } else if (width >= BREAKPOINTS.MEDIUM) {
+  } else if (_width >= BREAKPOINTS.MEDIUM) {
     numColumns = columns.medium;
   }
   
@@ -188,9 +188,9 @@ const ResponsiveSidebarLayout = ({
   style,
   ...props 
 }) => {
-  const { deviceType, width } = useResponsive();
+  const { deviceType } = useResponsive();
   const [sidebarVisible, setSidebarVisible] = useState(deviceType !== DEVICE_TYPES.MOBILE);
-  const { colors } = useTheme();
+  const { _colors } = useTheme();
   
   // Update sidebar visibility when device type changes
   useEffect(() => {
@@ -210,15 +210,15 @@ const ResponsiveSidebarLayout = ({
     },
     sidebar: {
       width: deviceType === DEVICE_TYPES.MOBILE ? '100%' : sidebarWidth,
-      backgroundColor: colors.card,
+      backgroundColor: _colors.card,
       borderRightWidth: sidebarPosition === 'left' && deviceType !== DEVICE_TYPES.MOBILE ? 1 : 0,
       borderLeftWidth: sidebarPosition === 'right' && deviceType !== DEVICE_TYPES.MOBILE ? 1 : 0,
-      borderColor: colors.border,
+      borderColor: _colors.border,
       display: sidebarVisible ? 'flex' : 'none'
     },
     content: {
       flex: 1,
-      backgroundColor: colors.background
+      backgroundColor: _colors.background
     },
     toggleButton: {
       position: 'absolute',
@@ -229,7 +229,7 @@ const ResponsiveSidebarLayout = ({
   });
   
   // Toggle sidebar visibility
-  const toggleSidebar = () => {
+  const _toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
   };
   

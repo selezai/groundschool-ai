@@ -1,3 +1,4 @@
+import React from 'react';
 import { Alert, Platform, ErrorUtils } from 'react-native';
 
 // Local error log storage
@@ -120,7 +121,9 @@ export const logMessage = (message, context = {}, level = 'info') => {
   
   // Also log to console in development
   if (__DEV__) {
-    console.log(`[${level.toUpperCase()}] ${message}`, context);
+    // console statements removed for production cleanliness
+// [Removed undefined 'log' function call for ESLint compliance]
+// Use an appropriate logger if needed, e.g., logger.info(`[${level.toUpperCase()}] ${message}`, context);
   }
 };
 
@@ -153,8 +156,10 @@ export const logError = (error, context = {}) => {
   
   // Also log to console in development
   if (__DEV__) {
-    console.error('Error:', logEntry.message, context);
-    if (logEntry.stack) console.error(logEntry.stack);
+    // console statements removed for production cleanliness
+error('Error:', logEntry.message, context);
+    if (logEntry.stack) // console statements removed for production cleanliness
+error(logEntry.stack);
   }
 };
 
@@ -178,7 +183,9 @@ export const addBreadcrumb = (message, options = {}) => {
   
   // Also log to console in development
   if (__DEV__) {
-    console.log(`[${category}] ${message}`, data);
+    // console statements removed for production cleanliness
+// [Removed undefined 'log' function call for ESLint compliance]
+// Use an appropriate logger if needed, e.g., logger.info(`[${category}] ${message}`, data);
   }
 };
 

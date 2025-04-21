@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import COLORS from '../../constants/colors';
 import { supabase } from '../../lib/supabaseClient';
 import { useTheme, spacing, typography } from '../../theme/theme';
 import { WebView } from 'react-native-webview';
@@ -125,7 +126,7 @@ const DocumentPreviewScreen = ({ route, navigation }) => {
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.errorContainer}>
           <Ionicons name="alert-circle-outline" size={48} color={colors.error} />
-          <Text style={[typography.body, { color: colors.error, marginTop: spacing.md, textAlign: 'center' }]}>
+          <Text style={[typography.body, styles.centeredText, { color: colors.error, marginTop: spacing.md }]}>
             {error}
           </Text>
           <TouchableOpacity 
@@ -145,7 +146,7 @@ const DocumentPreviewScreen = ({ route, navigation }) => {
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.errorContainer}>
           <Ionicons name="document-outline" size={48} color={colors.error} />
-          <Text style={[typography.body, { color: colors.error, marginTop: spacing.md, textAlign: 'center' }]}>
+          <Text style={[typography.body, styles.centeredText, { color: colors.error, marginTop: spacing.md }]}>
             Document not available
           </Text>
           <TouchableOpacity 
@@ -198,7 +199,7 @@ const DocumentPreviewScreen = ({ route, navigation }) => {
       ) : (
         <View style={styles.unsupportedContainer}>
           <Ionicons name="document-outline" size={48} color={colors.primary} />
-          <Text style={[typography.body, { color: colors.text, marginTop: spacing.md, textAlign: 'center' }]}>
+          <Text style={[typography.body, styles.centeredText, { color: colors.text, marginTop: spacing.md }]}>
             This file type cannot be previewed
           </Text>
         </View>
@@ -233,7 +234,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
@@ -272,6 +273,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing.xl,
     marginTop: spacing.xl // Space for the offline indicator
+  },
+  centeredText: {
+    textAlign: 'center'
   }
 });
 

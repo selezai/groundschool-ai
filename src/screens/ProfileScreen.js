@@ -1,11 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { AuthContext } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import ThemedButton from '../components/ThemedButton';
 import { useTheme, spacing, typography } from '../theme/theme';
 
 const ProfileScreen = () => {
-  const { user, resetPassword } = useContext(AuthContext);
+  const { user, resetPassword, signOut } = useAuth();
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const colors = useTheme();
@@ -22,6 +22,13 @@ const ProfileScreen = () => {
     }
   };
 
+  const handleSignOut = async () => {
+    setError(null);
+    setMessage(null);
+    const { error: err } = await signOut();
+    if (err) setError(err.message);
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>  
       <Text style={[typography.title, { color: colors.text, marginBottom: spacing.sm }]}>Profile</Text>
@@ -29,6 +36,7 @@ const ProfileScreen = () => {
       {error && <Text style={[typography.body, { color: colors.error, marginTop: spacing.sm }]}>{error}</Text>}
       {message && <Text style={[typography.body, { color: colors.success, marginTop: spacing.sm }]}>{message}</Text>}
       <ThemedButton title="Change Password" onPress={handleResetPassword} style={{ marginTop: spacing.md }} accessibilityLabel="Change Password button" />
+      <ThemedButton title="Sign Out" onPress={handleSignOut} style={{ marginTop: spacing.md }} accessibilityLabel="Sign Out button" />
     </View>
   );
 };

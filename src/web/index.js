@@ -30,10 +30,10 @@ export const initializeWebFeatures = async () => {
     if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
       serviceWorkerRegistration.register({
         onSuccess: () => {
-          logInfo('Service worker registered successfully');
+          logger.info('Service worker registered successfully');
         },
-        onUpdate: (registration) => {
-          logInfo('New content is available, please refresh');
+        onUpdate: (_registration) => {
+          logger.info('New content is available, please refresh');
           // You can show a notification to the user here
         }
       });
@@ -53,7 +53,7 @@ export const initializeWebFeatures = async () => {
     
     // Track when the PWA is installed
     if (typeof window !== 'undefined') {
-      window.addEventListener('appinstalled', (evt) => {
+      window.addEventListener('appinstalled', (_evt) => {
         logger.info('App was installed to home screen');
       });
     }
@@ -96,7 +96,7 @@ export const initializeWebFeatures = async () => {
     // Initialize push notifications if supported
     if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator && 
         typeof window !== 'undefined' && 'PushManager' in window) {
-      navigator.serviceWorker.ready.then(registration => {
+        navigator.serviceWorker.ready.then(_registration => {
         // We could request permission and subscribe to push here
         logger.info('Push notifications are supported');
       });

@@ -21,7 +21,7 @@ const initDB = () => {
   return new Promise((resolve, reject) => {
     // Check if IndexedDB is supported
     if (!window.indexedDB) {
-      console.error('Your browser doesn\'t support IndexedDB');
+      // console.error('Your browser doesn\'t support IndexedDB');
       reject('IndexedDB not supported');
       return;
     }
@@ -29,7 +29,7 @@ const initDB = () => {
     const request = window.indexedDB.open(DB_NAME, DB_VERSION);
 
     request.onerror = (event) => {
-      console.error('IndexedDB error:', event.target.error);
+      // console.error('IndexedDB error:', event.target.error);
       reject(event.target.error);
     };
 
@@ -77,108 +77,101 @@ const getStore = async (storeName, mode = 'readonly') => {
 
 // Generic add item function
 const addItem = async (storeName, item) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const store = await getStore(storeName, 'readwrite');
+  try {
+    const store = await getStore(storeName, 'readwrite');
+    return new Promise((resolve, reject) => {
       const request = store.add(item);
-
       request.onsuccess = () => resolve(request.result);
       request.onerror = (event) => reject(event.target.error);
-    } catch (error) {
-      reject(error);
-    }
-  });
+    });
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 // Generic update item function
 const updateItem = async (storeName, item) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const store = await getStore(storeName, 'readwrite');
+  try {
+    const store = await getStore(storeName, 'readwrite');
+    return new Promise((resolve, reject) => {
       const request = store.put(item);
-
       request.onsuccess = () => resolve(request.result);
       request.onerror = (event) => reject(event.target.error);
-    } catch (error) {
-      reject(error);
-    }
-  });
+    });
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 // Generic get item function
 const getItem = async (storeName, key) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const store = await getStore(storeName);
+  try {
+    const store = await getStore(storeName);
+    return new Promise((resolve, reject) => {
       const request = store.get(key);
-
       request.onsuccess = () => resolve(request.result);
       request.onerror = (event) => reject(event.target.error);
-    } catch (error) {
-      reject(error);
-    }
-  });
+    });
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 // Generic get all items function
 const getAllItems = async (storeName) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const store = await getStore(storeName);
+  try {
+    const store = await getStore(storeName);
+    return new Promise((resolve, reject) => {
       const request = store.getAll();
-
       request.onsuccess = () => resolve(request.result);
       request.onerror = (event) => reject(event.target.error);
-    } catch (error) {
-      reject(error);
-    }
-  });
+    });
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 // Generic delete item function
 const deleteItem = async (storeName, key) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const store = await getStore(storeName, 'readwrite');
+  try {
+    const store = await getStore(storeName, 'readwrite');
+    return new Promise((resolve, reject) => {
       const request = store.delete(key);
-
       request.onsuccess = () => resolve();
       request.onerror = (event) => reject(event.target.error);
-    } catch (error) {
-      reject(error);
-    }
-  });
+    });
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 // Get items by index
 const getByIndex = async (storeName, indexName, value) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const store = await getStore(storeName);
-      const index = store.index(indexName);
+  try {
+    const store = await getStore(storeName);
+    const index = store.index(indexName);
+    return new Promise((resolve, reject) => {
       const request = index.getAll(value);
-
       request.onsuccess = () => resolve(request.result);
       request.onerror = (event) => reject(event.target.error);
-    } catch (error) {
-      reject(error);
-    }
-  });
+    });
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 // Clear a store
 const clearStore = async (storeName) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const store = await getStore(storeName, 'readwrite');
+  try {
+    const store = await getStore(storeName, 'readwrite');
+    return new Promise((resolve, reject) => {
       const request = store.clear();
-
       request.onsuccess = () => resolve();
       request.onerror = (event) => reject(event.target.error);
-    } catch (error) {
-      reject(error);
-    }
-  });
+    });
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 // Add to offline queue
@@ -198,7 +191,7 @@ const processOfflineQueue = async () => {
     const queue = await getAllItems(STORES.OFFLINE_QUEUE);
     const pendingItems = queue.filter(item => item.status === 'pending');
     
-    console.log(`Processing ${pendingItems.length} offline operations`);
+    // console.log(`Processing ${pendingItems.length} offline operations`);
     
     // Process each item
     for (const item of pendingItems) {
@@ -212,7 +205,7 @@ const processOfflineQueue = async () => {
         // Mark as completed
         await updateItem(STORES.OFFLINE_QUEUE, { ...item, status: 'completed' });
       } catch (error) {
-        console.error('Error processing queue item:', error);
+        // console.error('Error processing queue item:', error);
         // Mark as failed
         await updateItem(STORES.OFFLINE_QUEUE, { 
           ...item, 
@@ -234,7 +227,7 @@ const processOfflineQueue = async () => {
     
     return true;
   } catch (error) {
-    console.error('Error processing offline queue:', error);
+    // console.error('Error processing offline queue:', error);
     return false;
   }
 };

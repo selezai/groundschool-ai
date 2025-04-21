@@ -78,7 +78,7 @@ describe('apiErrorHandler', () => {
       // Mock API request function
       const mockApiRequest = jest.fn().mockResolvedValue({ data: 'success' });
       
-      apiErrorHandler.isOnline = jest.fn().mockResolvedValue(true);
+      jest.spyOn(apiErrorHandler, 'isOnline').mockResolvedValue(true);
       
       const result = await apiErrorHandler.withApiErrorHandling(mockApiRequest);
       
@@ -93,7 +93,7 @@ describe('apiErrorHandler', () => {
       // Mock API request function
       const mockApiRequest = jest.fn();
       
-      apiErrorHandler.isOnline = jest.fn().mockResolvedValue(false);
+      jest.spyOn(apiErrorHandler, 'isOnline').mockResolvedValue(false);
       
       await expect(apiErrorHandler.withApiErrorHandling(mockApiRequest))
         .rejects.toThrow('Network connection unavailable');
@@ -109,11 +109,12 @@ describe('apiErrorHandler', () => {
       const apiError = { status: 404, message: 'Not found' };
       const mockApiRequest = jest.fn().mockRejectedValue(apiError);
       
-      apiErrorHandler.isOnline = jest.fn().mockResolvedValue(true);
+      jest.spyOn(apiErrorHandler, 'isOnline').mockResolvedValue(true);
       
       try {
         await apiErrorHandler.withApiErrorHandling(mockApiRequest);
-        fail('Should have thrown an error');
+        // This line should not be reached if the test is working correctly
+        expect('no error thrown').toBe('error should have been thrown');
       } catch (error) {
         expect(error).toEqual({
           message: 'Not found',
@@ -135,11 +136,12 @@ describe('apiErrorHandler', () => {
         throw unexpectedError;
       });
       
-      apiErrorHandler.isOnline = jest.fn().mockResolvedValue(true);
+      jest.spyOn(apiErrorHandler, 'isOnline').mockResolvedValue(true);
       
       try {
         await apiErrorHandler.withApiErrorHandling(mockApiRequest);
-        fail('Should have thrown an error');
+        // This line should not be reached if the test is working correctly
+        expect('no error thrown').toBe('error should have been thrown');
       } catch (error) {
         expect(error.message).toContain('Unexpected error');
       }

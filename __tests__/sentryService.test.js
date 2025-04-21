@@ -34,7 +34,7 @@ jest.mock('expo-constants', () => ({
 
 // Now import the modules
 import * as Sentry from 'sentry-expo';
-import { Platform } from 'react-native';
+import { Platform as _Platform } from 'react-native';
 import { 
   initSentry, 
   logError, 

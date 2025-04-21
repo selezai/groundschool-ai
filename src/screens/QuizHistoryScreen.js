@@ -215,7 +215,7 @@ const QuizHistoryScreen = ({ navigation }) => {
           
           {isPending && (
             <View style={[styles.pendingBadge, { backgroundColor: colors.info }]}>
-              <Text style={[typography.label, { color: colors.secondary, fontSize: 10 }]}>PENDING</Text>
+              <Text style={[typography.label, styles.smallText, { color: colors.secondary }]}>PENDING</Text>
             </View>
           )}
         </View>
@@ -260,7 +260,7 @@ const QuizHistoryScreen = ({ navigation }) => {
                 });
               }
             }} 
-            style={{ flex: 1, marginRight: spacing.sm }} 
+            style={[styles.flexFull, { marginRight: spacing.sm }]} 
             accessibilityLabel="View Results button" 
             disabled={isPending}
             icon="eye-outline"
@@ -268,7 +268,7 @@ const QuizHistoryScreen = ({ navigation }) => {
           <ThemedButton 
             title="Delete" 
             onPress={() => handleDelete(item.id, isPending)} 
-            style={{ flex: 0.5 }} 
+            style={styles.flexHalf} 
             accessibilityLabel="Delete Quiz button" 
             type="secondary"
             icon="trash-outline"
@@ -333,7 +333,7 @@ const QuizHistoryScreen = ({ navigation }) => {
       {error && (
         <View style={[styles.errorContainer, { borderColor: colors.error }]}>
           <Ionicons name="alert-circle" size={20} color={colors.error} />
-          <Text style={[typography.body, { color: colors.error, marginLeft: spacing.xs, flex: 1 }]}>
+          <Text style={[typography.body, styles.errorText, { color: colors.error }]}>
             {error}
           </Text>
         </View>
@@ -359,16 +359,16 @@ const QuizHistoryScreen = ({ navigation }) => {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Ionicons name="document-text-outline" size={48} color={colors.info} />
-            <Text style={[typography.subtitle, { color: colors.text, marginTop: spacing.md, textAlign: 'center' }]}>
+            <Text style={[typography.subtitle, styles.centeredText, { color: colors.text, marginTop: spacing.md }]}>
               No quiz history available
             </Text>
-            <Text style={[typography.body, { color: colors.info, marginTop: spacing.sm, textAlign: 'center' }]}>
+            <Text style={[typography.body, styles.centeredText, { color: colors.info, marginTop: spacing.sm }]}>
               Create a quiz from your documents to see it here
             </Text>
             <ThemedButton 
               title="Create New Quiz" 
               onPress={() => navigation.navigate('DocumentLibrary')} 
-              style={{ marginTop: spacing.lg }}
+              style={styles.buttonMarginTop}
               accessibilityLabel="Create New Quiz button"
               icon="add-circle-outline"
             />
@@ -465,6 +465,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: spacing.xl,
     marginTop: spacing.xl
+  },
+  smallText: {
+    fontSize: 10
+  },
+  flexFull: {
+    flex: 1
+  },
+  flexHalf: {
+    flex: 0.5
+  },
+  errorText: {
+    marginLeft: spacing.xs,
+    flex: 1
+  },
+  centeredText: {
+    textAlign: 'center'
+  },
+  buttonMarginTop: {
+    marginTop: spacing.lg
   }
 });
 

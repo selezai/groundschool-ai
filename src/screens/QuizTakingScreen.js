@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator, ScrollView, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, _FlatList, StyleSheet, ActivityIndicator, ScrollView, Alert } from 'react-native'; // _FlatList kept for potential future use
 import { Ionicons } from '@expo/vector-icons';
 import { supabase } from '../lib/supabaseClient';
 import { AuthContext } from '../contexts/AuthContext';
 import NetInfo from '@react-native-community/netinfo';
-import { getCachedQuiz, saveQuizResults, getOfflineStatus } from '../services/offlineService';
+import { getCachedQuiz, saveQuizResults, _getOfflineStatus } from '../services/offlineService'; // _getOfflineStatus kept for potential future use
 import { useTheme, spacing, typography } from '../theme/theme';
 import ThemedButton from '../components/ThemedButton';
 
@@ -185,7 +185,7 @@ const QuizTakingScreen = ({ route, navigation }) => {
     return (
       <View style={[styles.container, styles.centered, { backgroundColor: colors.background }]}>
         <Ionicons name="alert-circle-outline" size={48} color={colors.error} />
-        <Text style={[typography.subtitle, { color: colors.error, marginTop: spacing.md, textAlign: 'center' }]}>
+        <Text style={[typography.subtitle, styles.centeredText, { color: colors.error, marginTop: spacing.md }]}>
           {error}
         </Text>
         <ThemedButton 
@@ -203,7 +203,7 @@ const QuizTakingScreen = ({ route, navigation }) => {
     return (
       <View style={[styles.container, styles.centered, { backgroundColor: colors.background }]}>
         <Ionicons name="help-circle-outline" size={48} color={colors.info} />
-        <Text style={[typography.subtitle, { color: colors.text, marginTop: spacing.md, textAlign: 'center' }]}>
+        <Text style={[typography.subtitle, styles.centeredText, { color: colors.text, marginTop: spacing.md }]}>
           No questions available for this quiz.
         </Text>
         <ThemedButton 
@@ -269,7 +269,7 @@ const QuizTakingScreen = ({ route, navigation }) => {
       
       {/* Question */}
       <ScrollView style={styles.questionContainer}>
-        <Text style={[typography.body, { color: colors.text, marginBottom: spacing.md, fontSize: 18 }]}>
+        <Text style={[typography.body, styles.largeQuestionText, { color: colors.text }]}>
           {q.text}
         </Text>
         
@@ -302,9 +302,8 @@ const QuizTakingScreen = ({ route, navigation }) => {
                     {String.fromCharCode(65 + idx)}
                   </Text>
                 </View>
-                <Text style={[typography.body, { 
-                  color: (showCorrect || showIncorrect || isSelected) ? colors.secondary : colors.text,
-                  flex: 1
+                <Text style={[typography.body, styles.optionText, { 
+                  color: (showCorrect || showIncorrect || isSelected) ? colors.secondary : colors.text
                 }]}>
                   {opt}
                 </Text>
@@ -428,6 +427,16 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: spacing.md
+  },
+  centeredText: {
+    textAlign: 'center'
+  },
+  largeQuestionText: {
+    marginBottom: spacing.md,
+    fontSize: 18
+  },
+  optionText: {
+    flex: 1
   }
 });
 

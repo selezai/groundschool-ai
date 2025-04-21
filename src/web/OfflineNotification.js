@@ -29,7 +29,7 @@ const OfflineNotification = () => {
       zIndex: 1000,
     },
     text: {
-      color: '#FFFFFF',
+      color: colors.white || colors.background || '#FFFFFF', // Use theme colors instead of literals
       textAlign: 'center',
       fontWeight: 'bold',
     }

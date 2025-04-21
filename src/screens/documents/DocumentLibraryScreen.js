@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet, RefreshControl, ActivityIndicator, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import COLORS from '../../constants/colors';
 import { supabase } from '../../lib/supabaseClient';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useTheme, spacing, typography } from '../../theme/theme';
@@ -191,7 +192,7 @@ const DocumentLibraryScreen = ({ navigation }) => {
           <Text 
             style={[
               typography.label, 
-              { color: isSelected ? colors.secondary : colors.text, opacity: 0.7 }
+              { color: isSelected ? colors.secondary : colors.text }, styles.dimText
             ]}
           >
             {item.file_size ? `${(item.file_size / 1024).toFixed(1)} KB` : 'Size unknown'}
@@ -238,7 +239,7 @@ const DocumentLibraryScreen = ({ navigation }) => {
             { 
               borderColor: colors.border, 
               color: colors.text, 
-              backgroundColor: colors.background === '#F9FAFB' ? '#FFFFFF' : '#2D3748'
+              backgroundColor: colors.background === colors.light ? colors.white : colors.darkBackground
             }
           ]}
           placeholderTextColor={colors.info}
@@ -288,13 +289,13 @@ const DocumentLibraryScreen = ({ navigation }) => {
         <ThemedButton
           title="Upload Document"
           onPress={() => navigation.navigate('DocumentUpload')}
-          style={{ flex: 1, marginRight: spacing.xs }}
+          style={[styles.buttonFlex, { marginRight: spacing.xs }]}
         />
         <ThemedButton
           title="Create Quiz"
           onPress={() => navigation.navigate('QuizCreation', { documentIds: selected })}
           disabled={selected.length === 0}
-          style={{ flex: 1, marginLeft: spacing.xs }}
+          style={[styles.buttonFlex, { marginLeft: spacing.xs }]}
         />
       </View>
     </View>
@@ -357,7 +358,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs
   },
   selectedItem: { 
-    backgroundColor: '#4F46E5' 
+    backgroundColor: COLORS.indigo 
   },
   itemText: { 
     flex: 1,
@@ -381,6 +382,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  dimText: {
+    opacity: 0.7
+  },
+  buttonFlex: {
+    flex: 1
   }
 });
 

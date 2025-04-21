@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, _useEffect } from 'react'; // _useEffect kept for potential future use
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme, spacing, typography } from '../theme/theme';
 import ThemedButton from '../components/ThemedButton';
-import { saveQuizResults } from '../services/offlineService';
+import { saveQuizResults as _saveQuizResults } from '../services/offlineService'; // Kept for potential future use
 
 const QuizResultsScreen = ({ route, navigation }) => {
-  const { answers, score, quizId, quizTitle = 'Quiz', offline = false } = route.params;
+  const { answers, score, _quizId, quizTitle = 'Quiz', offline = false } = route.params; // _quizId kept for potential future use
   const [showDetails, setShowDetails] = useState(false);
   const colors = useTheme();
   
@@ -43,7 +43,7 @@ const QuizResultsScreen = ({ route, navigation }) => {
       >
         <View style={styles.topicHeader}>
           <Ionicons name={topicIcon} size={20} color={topicColor} />
-          <Text style={[typography.subtitle, { color: colors.text, marginLeft: spacing.xs, flex: 1 }]}>
+          <Text style={[typography.subtitle, styles.topicText, { color: colors.text }]}>
             {topic.charAt(0).toUpperCase() + topic.slice(1)}
           </Text>
           <Text style={[typography.body, { color: topicColor }]}>
@@ -84,7 +84,7 @@ const QuizResultsScreen = ({ route, navigation }) => {
         <Text style={[typography.subtitle, { color: colors.text, marginTop: spacing.xs }]}>Quiz Completed!</Text>
         
         <View style={[styles.scoreCircle, { borderColor: colors.primary }]}>
-          <Text style={[typography.title, { color: colors.primary, fontSize: 36 }]}>{scorePercent}%</Text>
+          <Text style={[typography.title, styles.largeScore, { color: colors.primary }]}>{scorePercent}%</Text>
           <Text style={[typography.body, { color: colors.text }]}>{correct} of {total} correct</Text>
         </View>
         
@@ -156,10 +156,11 @@ const QuizResultsScreen = ({ route, navigation }) => {
               
               <View style={[styles.answerDetail, { borderColor: colors.border }]}>
                 <Text style={[typography.label, { color: colors.text }]}>Your answer:</Text>
-                <Text style={[typography.body, { 
-                  color: answer.correct ? colors.success : colors.error,
-                  fontWeight: '500'
-                }]}>
+                <Text style={[
+                  typography.body, 
+                  styles.emphasizedText, 
+                  { color: answer.correct ? colors.success : colors.error }
+                ]}>
                   {answer.selectedOption}
                 </Text>
               </View>
@@ -167,7 +168,7 @@ const QuizResultsScreen = ({ route, navigation }) => {
               {!answer.correct && (
                 <View style={[styles.answerDetail, { borderColor: colors.border }]}>
                   <Text style={[typography.label, { color: colors.text }]}>Correct answer:</Text>
-                  <Text style={[typography.body, { color: colors.success, fontWeight: '500' }]}>
+                  <Text style={[typography.body, styles.emphasizedText, { color: colors.success }]}>
                     {answer.correctOption}
                   </Text>
                 </View>
@@ -276,6 +277,16 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: spacing.md
+  },
+  topicText: {
+    marginLeft: spacing.xs,
+    flex: 1
+  },
+  largeScore: {
+    fontSize: 36
+  },
+  emphasizedText: {
+    fontWeight: '500'
   }
 });
 

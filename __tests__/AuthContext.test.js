@@ -4,15 +4,15 @@ import { AuthProvider, AuthContext } from '../src/contexts/AuthContext';
 import { Text, Button } from 'react-native';
 
 // Mock AsyncStorage and Supabase
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { supabase } from '../src/lib/supabaseClient';
+import _AsyncStorage from '@react-native-async-storage/async-storage';
+import { supabase as _supabase } from '../src/services/supabaseClient';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),
   removeItem: jest.fn(),
 }));
-jest.mock('../src/lib/supabaseClient', () => ({
+jest.mock('../src/services/supabaseClient', () => ({
   supabase: {
     auth: {
       signUp: jest.fn(),

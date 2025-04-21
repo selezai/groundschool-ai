@@ -11,7 +11,7 @@ import indexedDBService from './indexedDBService';
 import { logError, logInfo } from '../services/loggerService';
 
 // Constants
-const DOCUMENTS_DIRECTORY = 'documents';
+const _DOCUMENTS_DIRECTORY = 'documents';
 
 // Create a virtual file system structure for web
 const virtualFS = {
@@ -379,7 +379,7 @@ const uploadFileAsync = async (fileUri, uploadUrl, options = {}) => {
   
   // For native platforms, use fetch API
   try {
-    const content = await FileSystem.readAsStringAsync(fileUri, {
+    const _content = await FileSystem.readAsStringAsync(fileUri, {
       encoding: FileSystem.EncodingType.Base64
     });
     

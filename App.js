@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar, LogBox, Platform } from 'react-native';
 import { AuthProvider } from './src/contexts/AuthContext';
 import { ThemeProvider } from './src/contexts/ThemeContext';
@@ -10,9 +10,8 @@ import { setupGlobalErrorHandlers } from './src/services/errorHandlingService';
 import ErrorBoundary from './src/components/ErrorBoundary';
 import * as logger from './src/services/loggerService';
 
-// Import web-specific components and services
-import { initializeWebFeatures } from './src/web';
-import { OfflineNotification } from './src/web';
+// Import web-specific components and services for web platform only
+import { initializeWebFeatures, OfflineNotification } from './src/web';
 
 // Ignore specific warnings
 LogBox.ignoreLogs([
@@ -27,6 +26,9 @@ initSentry();
 setupGlobalErrorHandlers();
 
 export default function App() {
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Handle app initialization
   useEffect(() => {
     // Log app startup
     logger.info('Application started', { version: '1.1.0', platform: Platform.OS });
@@ -40,16 +42,31 @@ export default function App() {
           } else {
             logger.warn('Some web features failed to initialize');
           }
+          setIsInitialized(true);
         })
         .catch(error => {
           logger.error('Failed to initialize web features', { error: error.message });
+          setIsInitialized(true); // Still mark as initialized even on error
         });
+    } else {
+      setIsInitialized(true);
     }
+  }, []);
+  
+  // Handle network connectivity
+  useEffect(() => {
+    // Only set up listeners if app is initialized
+    if (!isInitialized) return;
     
-    // Process offline queue
-    processQueue().catch(error => {
-      logger.error('Failed to process offline queue on startup', { error: error.message });
-    });
+    // Process offline queue on startup
+    const processInitialQueue = async () => {
+      try {
+        await processQueue();
+      } catch (error) {
+        logger.error('Failed to process offline queue on startup', { error: error.message });
+      }
+    };
+    processInitialQueue();
     
     // Set up network listener
     const unsubscribe = NetInfo.addEventListener(state => {
@@ -65,9 +82,9 @@ export default function App() {
     
     return () => {
       unsubscribe();
-      logger.info('Application cleanup');
+      logger.info('Network listener cleanup');
     };
-  }, []);
+  }, [isInitialized]);
   
   return (
     <ErrorBoundary errorContext={{ location: 'App root' }}>

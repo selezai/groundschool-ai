@@ -3,7 +3,7 @@ const React = require('react');
 const { Text } = require('react-native');
 
 // Create a mock component for each icon set
-const createIconSetMock = (name) => {
+const createIconSetMock = (_name) => {
   const IconComponent = ({ name, size, color, style, ...props }) => {
     return React.createElement(Text, {
       ...props,

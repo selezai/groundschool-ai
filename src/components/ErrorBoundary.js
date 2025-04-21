@@ -16,8 +16,8 @@ const ErrorFallback = ({ error, resetError }) => {
       <Text style={[typography.title, { color: colors.text, marginTop: spacing.md }]}>
         Something went wrong
       </Text>
-      <Text style={[typography.body, { color: colors.text, marginTop: spacing.sm, textAlign: 'center' }]}>
-        We're sorry, but something unexpected happened. The error has been reported to our team.
+      <Text style={[typography.body, styles.errorMessage, { color: colors.text }]}>
+        We&apos;re sorry, but something unexpected happened. The error has been reported to our team.
       </Text>
       {__DEV__ && (
         <View style={[styles.errorDetails, { borderColor: colors.border }]}>
@@ -44,6 +44,9 @@ class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null };
+    
+    // Bind methods
+    this.resetError = this.resetError.bind(this);
   }
 
   static getDerivedStateFromError(error) {
@@ -59,9 +62,9 @@ class ErrorBoundary extends React.Component {
     });
   }
 
-  resetError = () => {
+  resetError() {
     this.setState({ hasError: false, error: null });
-  };
+  }
 
   render() {
     if (this.state.hasError) {
@@ -85,6 +88,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: spacing.lg,
+  },
+  errorMessage: {
+    marginTop: spacing.sm,
+    textAlign: 'center',
   },
   errorDetails: {
     marginTop: spacing.md,

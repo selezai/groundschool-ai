@@ -25,7 +25,7 @@ export const initSentry = () => {
  */
 export const logError = (error, context = {}) => {
   if (__DEV__) {
-    console.error('Error logged to Sentry:', error, context);
+    // console.error removed for production cleanliness
   }
   
   // Extract componentStack to keep it separate in extra
@@ -49,7 +49,7 @@ export const logError = (error, context = {}) => {
  */
 export const logMessage = (message, context = {}, level = 'info') => {
   if (__DEV__) {
-    console.log(`[${level.toUpperCase()}] ${message}`, context);
+    // console.log removed for production cleanliness
   }
   
   Sentry.Native.captureMessage(message, {

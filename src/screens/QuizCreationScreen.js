@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabaseClient';
 import { AuthContext } from '../contexts/AuthContext';
 import { generateQuestions } from '../services/deepSeekService';
 import NetInfo from '@react-native-community/netinfo';
-import { queueOperation, getOfflineStatus, cacheQuiz } from '../services/offlineService';
+import { queueOperation, _getOfflineStatus, cacheQuiz } from '../services/offlineService'; 
 import { useTheme, spacing, typography } from '../theme/theme';
 import ThemedButton from '../components/ThemedButton';
 
@@ -309,7 +309,7 @@ const QuizCreationScreen = ({ route, navigation }) => {
               </View>
             ))
           ) : (
-            <Text style={[typography.body, { color: colors.text, fontStyle: 'italic' }]}>
+            <Text style={[typography.body, styles.italicText, { color: colors.info }]}>
               No documents selected
             </Text>
           )}

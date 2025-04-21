@@ -1,16 +1,18 @@
 import * as service from '../src/services/errorHandlingService';
-import { ErrorUtils } from 'react-native';
+import { ErrorUtils as _ErrorUtils } from 'react-native';
 
 // Mock console methods to verify logging
 const originalConsole = { ...console };
 beforeAll(() => {
-  console.error = jest.fn();
-  console.log = jest.fn();
+  // These are intentional mocks for testing, so we disable the ESLint warning
+  console.error = jest.fn(); // eslint-disable-line no-console
+  console.log = jest.fn(); // eslint-disable-line no-console
 });
 
 afterAll(() => {
-  console.error = originalConsole.error;
-  console.log = originalConsole.log;
+  // Restore original console methods after tests
+  console.error = originalConsole.error; // eslint-disable-line no-console
+  console.log = originalConsole.log; // eslint-disable-line no-console
 });
 
 // Create mock functions for ErrorUtils

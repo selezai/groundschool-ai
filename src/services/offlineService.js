@@ -60,7 +60,7 @@ export async function queueOperation(op) {
     
     return opId;
   } catch (error) {
-    console.error('Error queueing operation:', error);
+    // console.error removed for production cleanliness
     throw new Error(`Failed to queue operation: ${error.message}`);
   }
 }
@@ -75,7 +75,7 @@ export async function processQueue(force = false) {
     // Check network status
     const state = await NetInfo.fetch();
     if (!state.isConnected && !force) {
-      console.log('Cannot process queue: offline');
+      // console.log removed for production cleanliness
       return { success: 0, failed: 0, remaining: 0 };
     }
     
@@ -256,7 +256,7 @@ export async function processQueue(force = false) {
           });
         }
         
-        console.error(`Offline operation failed (${op.type}):`, error);
+        // console.error removed for production cleanliness
       }
     }
     
@@ -280,7 +280,7 @@ export async function processQueue(force = false) {
       remaining: remainingOps.length,
     };
   } catch (error) {
-    console.error('Error processing queue:', error);
+    // console.error removed for production cleanliness
     throw new Error(`Failed to process queue: ${error.message}`);
   }
 }
@@ -295,7 +295,7 @@ export async function getOfflineStatus() {
     if (!data) return { ...defaultOfflineStatus };
     return JSON.parse(data);
   } catch (error) {
-    console.error('Error getting offline status:', error);
+    // console.error removed for production cleanliness
     return { ...defaultOfflineStatus };
   }
 }
@@ -338,7 +338,7 @@ export async function updateOfflineStatus(updates = {}) {
     
     return updatedStatus;
   } catch (error) {
-    console.error('Error updating offline status:', error);
+    // console.error removed for production cleanliness
     throw new Error(`Failed to update offline status: ${error.message}`);
   }
 }
@@ -359,7 +359,7 @@ export function setupOfflineMode() {
         await processQueue();
       }
     } catch (error) {
-      console.error('Error in network state change handler:', error);
+      // console.error removed for production cleanliness
     }
   });
   
@@ -399,7 +399,7 @@ export async function cacheDocument(document) {
     // Save updated documents
     await AsyncStorage.setItem(CACHED_DOCUMENTS_KEY, JSON.stringify(documents));
   } catch (error) {
-    console.error('Error caching document:', error);
+    // console.error removed for production cleanliness
     throw new Error(`Failed to cache document: ${error.message}`);
   }
 }
@@ -413,7 +413,7 @@ export async function getCachedDocuments() {
     const data = await AsyncStorage.getItem(CACHED_DOCUMENTS_KEY);
     return data ? JSON.parse(data) : [];
   } catch (error) {
-    console.error('Error getting cached documents:', error);
+    // console.error removed for production cleanliness
     return [];
   }
 }
@@ -450,7 +450,7 @@ export async function cacheQuiz(quiz, questions) {
     // Save updated quizzes
     await AsyncStorage.setItem(CACHED_QUIZZES_KEY, JSON.stringify(quizzes));
   } catch (error) {
-    console.error('Error caching quiz:', error);
+    // console.error removed for production cleanliness
     throw new Error(`Failed to cache quiz: ${error.message}`);
   }
 }
@@ -464,7 +464,7 @@ export async function getCachedQuizzes() {
     const data = await AsyncStorage.getItem(CACHED_QUIZZES_KEY);
     return data ? JSON.parse(data) : [];
   } catch (error) {
-    console.error('Error getting cached quizzes:', error);
+    // console.error removed for production cleanliness
     return [];
   }
 }
@@ -534,7 +534,7 @@ export async function getCachedQuiz(quizId, forceUpdate = false, quizData = null
     
     return { quiz: quizOnly, questions: questions || [] };
   } catch (error) {
-    console.error('Error getting cached quiz:', error);
+    // console.error removed for production cleanliness
     return null;
   }
 }
@@ -558,7 +558,7 @@ export async function deleteCachedQuiz(quizId) {
     // Save updated quizzes
     await AsyncStorage.setItem(CACHED_QUIZZES_KEY, JSON.stringify(updatedQuizzes));
   } catch (error) {
-    console.error('Error deleting cached quiz:', error);
+    // console.error removed for production cleanliness
     throw new Error(`Failed to delete cached quiz: ${error.message}`);
   }
 }
@@ -611,7 +611,7 @@ export async function saveQuizResults(results) {
     
     return results;
   } catch (error) {
-    console.error('Error saving quiz results:', error);
+    // console.error removed for production cleanliness
     throw new Error(`Failed to save quiz results: ${error.message}`);
   }
 }
@@ -694,14 +694,14 @@ export async function syncQuizzes(userId) {
         
         successCount++;
       } catch (err) {
-        console.error('Error syncing quiz:', err);
+        // console.error removed for production cleanliness
         failedCount++;
       }
     }
     
     return { success: successCount, failed: failedCount };
   } catch (error) {
-    console.error('Error syncing quizzes:', error);
+    // console.error removed for production cleanliness
     throw new Error(`Failed to sync quizzes: ${error.message}`);
   }
 }
